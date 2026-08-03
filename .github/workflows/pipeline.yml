@@ -1,13 +1,16 @@
-name: My first Pipeline
+name: My First Pipeline
 
 on:
   push:
     branches:
       - main
       - feature/**
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
@@ -17,7 +20,10 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.13'
+          python-version: '3.11'
 
-      - name: Run the app
-        run: python app.py
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run tests
+        run: pytest test_app.py -v
